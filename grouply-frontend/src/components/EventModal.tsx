@@ -25,7 +25,6 @@ export default function EventModal(props: any) {
     const [time, setTime] = useState(initialDateTime ? initialDateTime.slice(11, 16) : "");
     
     const [location, setLocation] = useState(event.location ?? "");
-    const [capacity, setCapacity] = useState<number>(event.capacity ?? 1);
     const [imageUrl, setImageUrl] = useState(event.imageUrl);
     const [previewAbs, setPreviewAbs] = useState<string | null>(
         event.imageUrl ? toAbsolute(event.imageUrl) : null
@@ -130,7 +129,6 @@ export default function EventModal(props: any) {
                 description: description.trim(),
                 dateTime,
                 location: location.trim(),
-                capacity: Number(capacity) || 0,
                 imageUrl: imageUrl?.trim() || undefined,
             };
 
@@ -271,17 +269,6 @@ export default function EventModal(props: any) {
                                         value={location} 
                                         onChange={(e) => setLocation(e.target.value)}
                                         placeholder="Event location (optional)" 
-                                    />
-                                </div>
-
-                                <div className="field">
-                                    <label className="field__label">Capacity</label>
-                                    <input 
-                                        className="input" 
-                                        type="number" 
-                                        min={1} 
-                                        value={capacity} 
-                                        onChange={(e) => setCapacity(Number(e.target.value))} 
                                     />
                                 </div>
                             </div>

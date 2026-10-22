@@ -4,7 +4,7 @@ export type EventItem = {
     description?: string | null;
     dateTime?: string | null;
     location?: string | null;
-    capacity?: number | null;
+    participantCount?: number | null;
     imageUrl?: string | null;
 };
 
@@ -64,9 +64,10 @@ export default function EventCard({
 
                 {meta && <p className="card-meta" style={{ margin: "6px 0", color: "var(--muted-fg)", fontSize: "0.9rem" }}>{meta}</p>}
 
-                {event.capacity != null && (
+                {event.participantCount != null && (
                     <div style={{ marginBottom: 8, fontSize: "0.85rem", color: "var(--muted-fg)" }}>
-                        Capacity: {event.capacity}
+                        {event.participantCount}{" "}
+                        {event.participantCount === 1 ? "person" : "people"}
                     </div>
                 )}
 

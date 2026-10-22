@@ -13,7 +13,7 @@ type EventDTO = {
   description?: string;
   dateTime?: string;
   location?: string;
-  capacity?: number;
+  participantCount?: number;
   imageUrl?: string | null;
 };
 
@@ -159,12 +159,13 @@ export default function EventsPage() {
                           <span>{event.location}</span>
                         </div>
                       )}
-                      {event.capacity != null && (
-                        <div className="event-card__meta-row">
-                          <img src={peopleIcon} alt="" className="event-card__icon" />
-                          <span>Group limit: {event.capacity} people</span>
-                        </div>
-                      )}
+                      <div className="event-card__meta-row">
+                        <img src={peopleIcon} alt="" className="event-card__icon" />
+                        <span>
+                          {event.participantCount ?? 0}{" "}
+                          {(event.participantCount ?? 0) === 1 ? "person" : "people"}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="event-card__divider" />

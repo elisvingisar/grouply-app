@@ -8,7 +8,7 @@ public class EventDTO {
     private String description;
     private LocalDateTime dateTime;
     private String location;
-    private Integer capacity;
+    private Integer participantCount;
     private String imageUrl;
 
     public Long getId() { return id; }
@@ -25,9 +25,9 @@ public class EventDTO {
     
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-    
-    public Integer getCapacity() { return capacity; }
-    public void setCapacity(Integer capacity) { this.capacity = capacity; }
+
+    public Integer getParticipantCount() { return participantCount; }
+    public void setParticipantCount(Integer participantCount) { this.participantCount = participantCount; }
     
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }

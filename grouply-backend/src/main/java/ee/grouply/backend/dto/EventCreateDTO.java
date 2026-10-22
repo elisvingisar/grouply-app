@@ -3,7 +3,6 @@ package ee.grouply.backend.dto;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class EventCreateDTO {
@@ -19,9 +18,6 @@ public class EventCreateDTO {
     @Size(max = 500, message = "Location must be less than 500 characters")
     private String location;
 
-    @Positive(message = "Capacity must be a positive number")
-    private Integer capacity;
-
     @Size(max = 2048, message = "Image URL must be less than 2048 characters")
     private String imageUrl;
 
@@ -36,9 +32,6 @@ public class EventCreateDTO {
     
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-    
-    public Integer getCapacity() { return capacity; }
-    public void setCapacity(Integer capacity) { this.capacity = capacity; }
     
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
