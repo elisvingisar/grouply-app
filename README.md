@@ -16,8 +16,7 @@ Started by @ElisVingisar to explore full-stack development; forked and continued
 * Add expenses with three split modes (equal, percentage, exact amounts)
 * Calculate balances and settlements
 
-### Status
-Currently adding new features and polishing the UI.
+
 
 ---
 
