@@ -177,14 +177,14 @@ export default function EventModal(props: any) {
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose} aria-hidden="true">
+        <div className="event-modal modal-overlay" onClick={onClose} aria-hidden="true">
             <div className="modal-panel" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-scroller">
                     <div className="modal-content">
                         {/* Header */}
                         <div className="modal-header">
                           <h2 id="event-modal-title">{event.title}</h2>
-                          <button className="btn-icon" onClick={onClose} aria-label="Close">✕</button>
+                          <button type="button" className="btn-icon" onClick={onClose} aria-label="Close">✕</button>
                         </div>
 
                         {/* Tabs */}
@@ -199,14 +199,13 @@ export default function EventModal(props: any) {
 
                         {/* Tab content */}
                         {activeTab === "details" && (
-                          <div style={{ display: "grid", gap: "var(--space-xs)" }}>
+                          <div className="form-grid">
                             {/* Image dropzone + preview */}
                             <div
                               className={"dropzone" + (dragOver ? " dropzone--active" : "")}
                               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                               onDragLeave={() => setDragOver(false)}
                               onDrop={onDrop}
-                              style={{ marginBottom: 16 }}
                             >
                               {previewAbs ? (
                                 <img src={previewAbs} alt="Event" />
@@ -219,58 +218,56 @@ export default function EventModal(props: any) {
                               {uploading && <div style={{ marginTop: 8 }}>Uploading…</div>}
                             </div>
 
-                            <div className="form-grid">
-                                <div className="field">
-                                    <label className="field__label">Title *</label>
-                                    <input 
-                                        className="input" 
-                                        value={title} 
-                                        onChange={(e) => setTitle(e.target.value)} 
-                                        placeholder="Event title"
-                                        required 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Title *</label>
+                                <input
+                                    className="input"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder="Event title"
+                                    required
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Description</label>
-                                    <textarea 
-                                        className="textarea" 
-                                        value={description} 
-                                        onChange={(e) => setDescription(e.target.value)} 
-                                        rows={3}
-                                        placeholder="Event description (optional)"
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Description</label>
+                                <textarea
+                                    className="textarea"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    rows={3}
+                                    placeholder="Event description (optional)"
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Date</label>
-                                    <input 
-                                        className="input" 
-                                        type="date" 
-                                        value={date} 
-                                        onChange={(e) => setDate(e.target.value)} 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Date</label>
+                                <input
+                                    className="input"
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Time</label>
-                                    <input 
-                                        className="input" 
-                                        type="time" 
-                                        value={time} 
-                                        onChange={(e) => setTime(e.target.value)} 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Time</label>
+                                <input
+                                    className="input"
+                                    type="time"
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Location</label>
-                                    <input 
-                                        className="input" 
-                                        value={location} 
-                                        onChange={(e) => setLocation(e.target.value)}
-                                        placeholder="Event location (optional)" 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Location</label>
+                                <input
+                                    className="input"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    placeholder="Event location (optional)"
+                                />
                             </div>
 
                             {error && (
@@ -281,16 +278,18 @@ export default function EventModal(props: any) {
 
                             {/* Actions (only show on details tab) */}
                             <div className="form-actions">
-                                <button 
-                                    className="btn btn-danger" 
-                                    onClick={onDelete} 
+                                <button
+                                    type="button"
+                                    className="modal-btn modal-btn--danger"
+                                    onClick={onDelete}
                                     disabled={deleting}
                                 >
                                     {deleting ? "Deleting..." : "Delete"}
                                 </button>
-                                <button 
-                                    className="btn btn-primary" 
-                                    onClick={onSave} 
+                                <button
+                                    type="button"
+                                    className="modal-btn modal-btn--primary"
+                                    onClick={onSave}
                                     disabled={saving}
                                 >
                                     {saving ? "Saving..." : "Save changes"}
@@ -300,38 +299,38 @@ export default function EventModal(props: any) {
                         )}
 
                         {activeTab === "expenses" && (
-                          <div>
+                          <div className="modal-tab-panel">
                             <ExpenseList eventId={event.id} />
                           </div>
                         )}
 
                         {activeTab === "balances" && (
-                          <div>
+                          <div className="modal-tab-panel">
                             <BalanceOverview eventId={event.id} />
                           </div>
                         )}
 
                         {activeTab === "invitations" && (
-                          <div className="modal-section" style={{ display: "grid", gap: 12 }}>
-                            <h3 style={{ margin: 0 }}>Invite people</h3>
+                          <div className="modal-section">
+                            <h3>Invite people</h3>
 
-                            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            <div className="invite-row">
                               <input
                                 className="input"
                                 type="email"
                                 placeholder="friend@example.com"
                                 value={inviteEmail}
                                 onChange={(e) => setInviteEmail(e.target.value)}
-                                style={{ flex: "1 1 260px" }}
                               />
                               <input
-                              className="input"
-                              placeholder="Optional message"
-                              value={inviteMessage}
-                              onChange={(e) => setInviteMessage(e.target.value)}
-                            />
+                                className="input"
+                                placeholder="Optional message"
+                                value={inviteMessage}
+                                onChange={(e) => setInviteMessage(e.target.value)}
+                              />
                               <button
-                                className="btn btn-primary"
+                                type="button"
+                                className="modal-btn modal-btn--primary"
                                 onClick={handleSendInvite}
                                 disabled={inviting || !inviteEmail.trim()}
                               >
@@ -340,11 +339,11 @@ export default function EventModal(props: any) {
                             </div>
 
                             {invites.length > 0 ? (
-                              <div style={{ marginTop: 8 }}>
-                                <div style={{ fontWeight: 600, marginBottom: 6 }}>Invitations</div>
-                                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                              <div>
+                                <div className="invite-list-title">Invitations</div>
+                                <ul className="invite-list">
                                   {invites.map((i) => (
-                                    <li key={i.id} style={{ marginBottom: 4 }}>
+                                    <li key={i.id}>
                                       {(i.userName || i.email)} — {i.status.toLowerCase()}
                                       {i.respondedAt ? ` (on ${new Date(i.respondedAt).toLocaleDateString()})` : ""}
                                     </li>
@@ -352,7 +351,7 @@ export default function EventModal(props: any) {
                                 </ul>
                               </div>
                             ) : (
-                              <p className="text-muted" style={{ marginTop: 8 }}>No invitations yet.</p>
+                              <p className="invite-empty">No invitations yet.</p>
                             )}
                           </div>
                         )}

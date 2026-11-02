@@ -1,210 +1,360 @@
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay);
-    backdrop-filter: blur(8px);
-    display: grid;
-    place-items: center;
-    z-index: 1000;
-    padding: 16px;
-    box-sizing: border-box;
+/* Event modal — aligned with auth / Events / Invitations */
+
+.event-modal.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.28);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-/* Modal Panel - Specific to EventModal scrolling behavior */
-.modal-panel {
-    width: 100%;
-    max-width: 720px;
-    box-sizing: border-box;
-    background: var(--color-surface);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-xl);
-    max-height: 90vh;
-    overflow: auto;
-    overflow-x: hidden;
-    scrollbar-gutter: stable both-edges;
+.event-modal .modal-panel {
+  width: 100%;
+  max-width: 720px;
+  box-sizing: border-box;
+  background: #f7f7f5;
+  color: #111111;
+  border: 1px solid #e4e4df;
+  border-radius: 20px;
+  box-shadow: 0 20px 56px rgba(17, 17, 17, 0.1);
+  max-height: 90vh;
+  overflow: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable both-edges;
 }
 
-.modal-panel img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+.event-modal .modal-panel img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
 }
 
-.modal-title {
-    margin: 0;
-    font-size: 1.25rem;
+.event-modal .modal-content {
+  padding: 1.75rem 1.5rem 1.5rem;
+  /* Override global .modal-content cream surface from index.css */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: none;
+  width: 100%;
 }
 
-/* Header with close button */
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-md);
-    border-bottom: 1px solid var(--color-border-light);
+.event-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.35rem;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
-.modal-header h2 {
-    margin: 0;
-    padding: 0;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--color-text);
+.event-modal .modal-header h2 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #111111;
 }
 
-/* Close button - X icon (unique to modal) */
-.btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px !important;
-    height: 32px !important;
-    padding: 0 !important;
-    background: var(--color-danger) !important;
-    border: none !important;
-    border-radius: var(--radius-sm);
-    color: white !important;
-    font-size: 1.125rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    flex-shrink: 0;
-    box-shadow: none !important;
+.event-modal .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid #e4e4df;
+  border-radius: 9999px;
+  color: #111111;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
 }
 
-.btn-icon:hover {
-    background: #A04D41 !important;
-    transform: scale(1.05);
+.event-modal .btn-icon:hover {
+  background: #ecece8;
+  border-color: #cfcfc9;
 }
 
-.modal-content {
-    padding: 24px;
+.event-modal .tabs-container {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  margin-bottom: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e4e4df;
+  border-radius: 9999px;
 }
 
-/* Tabs container - responsive width distribution */
-.tabs-container {
-    display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--color-border-light);
-    margin-bottom: var(--space-lg);
-    position: relative;
+.event-modal .tab {
+  flex: 1;
+  padding: 0.55rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #6b6b6b;
+  white-space: nowrap;
+  text-align: center;
+  min-width: 0;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
-/* Tabs - responsive sizing */
-.tab {
-    flex: 1; /* Equal width distribution */
-    padding: var(--space-sm) var(--space-md);
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--color-text-muted);
-    transition: var(--transition);
-    font-family: var(--font-sans);
-    white-space: nowrap;
-    font-size: 0.9375rem;
-    margin-bottom: -2px;
-    text-align: center;
-    min-width: 0; /* Allow shrinking below content size */
+.event-modal .tab.active {
+  background: #111111;
+  color: #ffffff;
+  font-weight: 600;
 }
 
-.tab.active {
-    border-bottom-color: var(--color-primary);
-    color: var(--color-text);
+.event-modal .tab:hover:not(.active) {
+  color: #111111;
+  background: #f7f7f5;
 }
 
-.tab:hover {
-    background: var(--color-surface-hover);
-    color: var(--color-text);
+.event-modal .form-grid,
+.event-modal .modal-section {
+  background: #ffffff;
+  border: 1px solid #e4e4df;
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem 1.25rem;
 }
 
-/* Drag & drop area (unique to EventModal) */
-.dropzone {
-    border: 2px dashed var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-xl);
-    text-align: center;
-    user-select: none;
-    transition: var(--transition);
-    cursor: pointer;
-    background: var(--color-surface-hover);
-    color: var(--color-text-secondary);
+.event-modal .dropzone {
+  border: 1.5px dashed #cfcfc9;
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  background: #f7f7f5;
+  color: #6b6b6b;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.dropzone--active { 
-    border-color: var(--color-primary);
-    background: var(--color-primary-subtle);
-    color: var(--color-primary);
+.event-modal .dropzone--active,
+.event-modal .dropzone:hover {
+  border-color: #111111;
+  background: #f0f0ec;
+  color: #111111;
 }
 
-.dropzone:hover {
-    border-color: var(--color-primary);
+.event-modal .form-grid {
+  display: grid;
+  gap: 0.85rem;
 }
 
-/* Modal sections (specific to multi-section modals) */
-.modal-section {
-    margin-top: 0;
-    padding-top: 0;
+.event-modal .field {
+  display: grid;
+  gap: 0.35rem;
 }
 
-/* Form actions with split layout (unique to EventModal) */
-.form-actions {
-    display: flex;
-    gap: var(--space-md);
-    justify-content: space-between;
-    margin-top: var(--space-xl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--color-border-light);
+.event-modal .field__label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a4a4a;
 }
 
-.form-error {
-    padding: var(--space-md);
-    background: rgba(184, 92, 79, 0.1);
-    border: 1px solid var(--color-danger);
-    border-radius: var(--radius-md);
-    color: var(--color-danger);
-    font-size: 0.875rem;
+.event-modal .input,
+.event-modal .textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1.5px solid #d8d8d4;
+  border-radius: 14px;
+  color: #111111;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 0.7rem 0.9rem;
 }
 
-/* Mobile responsiveness */
+.event-modal .textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.event-modal .input:focus,
+.event-modal .textarea:focus {
+  outline: none;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.event-modal .input::placeholder,
+.event-modal .textarea::placeholder {
+  color: #9a9a96;
+}
+
+.event-modal .form-error {
+  margin-top: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  background: #faf0ee;
+  color: #8a3a32;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+}
+
+.event-modal .form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #f0f0ec;
+}
+
+.event-modal .modal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+.event-modal .modal-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.event-modal .modal-btn--primary {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+}
+
+.event-modal .modal-btn--primary:hover:not(:disabled) {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+}
+
+.event-modal .modal-btn--danger {
+  background: transparent;
+  color: #8a3a32;
+  border: 1.5px solid #e0c4c0;
+}
+
+.event-modal .modal-btn--danger:hover:not(:disabled) {
+  background: #faf0ee;
+  border-color: #8a3a32;
+}
+
+.event-modal .modal-section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.event-modal .modal-tab-panel {
+  background: #ffffff;
+  border: 1px solid #e4e4df;
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem 1.25rem;
+}
+
+.event-modal .modal-section h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.event-modal .invite-row {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.event-modal .invite-row .input {
+  flex: 1 1 200px;
+}
+
+.event-modal .invite-list-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #111111;
+  margin: 0.25rem 0 0.35rem;
+}
+
+.event-modal .invite-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #3a3a3a;
+  line-height: 1.5;
+}
+
+.event-modal .invite-list li {
+  margin-bottom: 0.25rem;
+}
+
+.event-modal .invite-empty {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #6b6b6b;
+}
+
 @media (max-width: 768px) {
-    .modal-panel {
-        max-width: 100%;
-        border-radius: var(--radius-md);
-        max-height: 95vh;
-    }
+  .event-modal .modal-panel {
+    max-width: 100%;
+    border-radius: 16px;
+    max-height: 95vh;
+  }
 
-    .modal-content {
-        padding: 16px;
-    }
+  .event-modal .modal-content {
+    padding: 1.15rem;
+  }
 
-    .modal-header h2 {
-        font-size: 1.25rem;
-    }
+  .event-modal .modal-header h2 {
+    font-size: 1.15rem;
+  }
 
-    .tab {
-        padding: var(--space-sm) var(--space-xs);
-        font-size: 0.8125rem; /* Smaller text on mobile */
-    }
+  .event-modal .tabs-container {
+    border-radius: 14px;
+  }
 
-    .form-actions {
-        flex-direction: column-reverse;
-        gap: var(--space-sm);
-    }
+  .event-modal .tab {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.75rem;
+  }
 
-    .form-actions .btn {
-        width: 100%;
-    }
-}
+  .event-modal .form-actions {
+    flex-direction: column-reverse;
+  }
 
-/* Extra small screens - prevent overflow */
-@media (max-width: 480px) {
-    .tab {
-        font-size: 0.75rem;
-        padding: var(--space-sm) 4px;
-    }
+  .event-modal .form-actions .modal-btn {
+    width: 100%;
+  }
 }
