@@ -1,8 +1,8 @@
 # Grouply
 
-Grouply is an expense-splitting app for events and groups. Split costs. Keep the peace.
+Grouply is an expense-splitting app for shared events.
 
-@ElisVingisar started this project to learn full-stack development and to fit their own needs. I'm Rahel and I forked it and I am developing it further as a portfolio project, with the same core: events, invites, expenses, balances, and settlements.
+Started by @ElisVingisar to explore full-stack development; forked and continued by @rpettai to enhance the UI and features.
 
 
 ### Tech Stack
