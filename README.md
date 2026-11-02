@@ -1,6 +1,9 @@
 # Grouply
 
-Grouply is a personal project I started to explore full-stack development and create something that fits my own needs. It is an expense splitting application for events and groups.
+Grouply is an expense-splitting app for events and groups. Split costs. Keep the peace.
+
+@ElisVingisar started this project to learn full-stack development and to fit their own needs. I'm Rahel and I forked it and I am developing it further as a portfolio project, with the same core: events, invites, expenses, balances, and settlements.
+
 
 ### Tech Stack
 **Backend**: Java 21, Spring Boot 3.5, PostgreSQL, Spring Security + JWT <br>
@@ -14,7 +17,7 @@ Grouply is a personal project I started to explore full-stack development and cr
 * Calculate balances and settlements
 
 ### Status
-Currently refactoring and adding tests.
+Currently adding new features and polishing the UI.
 
 ---
 
