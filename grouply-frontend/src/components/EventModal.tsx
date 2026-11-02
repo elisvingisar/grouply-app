@@ -209,6 +209,7 @@ export default function EventModal(props: any) {
                           </button>
                         </div>
 
+                        <div className="modal-body">
                         {/* Tab content */}
                         {activeTab === "overview" && (
                           <EventOverview
@@ -376,6 +377,7 @@ export default function EventModal(props: any) {
                             )}
                           </div>
                         )}
+                        </div>
                       </div>
                     </div>
                 </div>
