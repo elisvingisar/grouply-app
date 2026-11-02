@@ -190,109 +190,109 @@ export default function EventOverview({
 
   return (
     <div className="overview">
-      {/* 1. Event snapshot */}
-      <section className="overview-card">
-        <div
-          className={
-            cover
-              ? "overview-cover"
-              : "overview-cover overview-cover--empty"
-          }
-          style={cover ? { backgroundImage: `url(${cover})` } : undefined}
-          role="img"
-          aria-label={cover ? "Event cover" : "No cover image"}
-        />
-        <div className="overview-snapshot">
-          <h3 className="overview-title">{event.title || "Untitled event"}</h3>
-          <div className="overview-meta">
-            <div className="overview-meta-row">
-              <span className="overview-meta-label">Date</span>
-              <span>{when?.date ?? "—"}</span>
-            </div>
-            <div className="overview-meta-row">
-              <span className="overview-meta-label">Time</span>
-              <span>{when?.time ?? "—"}</span>
-            </div>
-            <div className="overview-meta-row">
-              <span className="overview-meta-label">Location</span>
-              <span>{event.location?.trim() || "—"}</span>
+      <div className="overview-main">
+        <section className="overview-card overview-details">
+          <div
+            className={
+              cover
+                ? "overview-cover"
+                : "overview-cover overview-cover--empty"
+            }
+            style={cover ? { backgroundImage: `url(${cover})` } : undefined}
+            role="img"
+            aria-label={cover ? "Event cover" : "No cover image"}
+          />
+          <div className="overview-snapshot">
+            <h3 className="overview-title">{event.title || "Untitled event"}</h3>
+            <div className="overview-meta">
+              <div className="overview-meta-row">
+                <span className="overview-meta-label">Date</span>
+                <span>{when?.date ?? "—"}</span>
+              </div>
+              <div className="overview-meta-row">
+                <span className="overview-meta-label">Time</span>
+                <span>{when?.time ?? "—"}</span>
+              </div>
+              <div className="overview-meta-row">
+                <span className="overview-meta-label">Location</span>
+                <span>{event.location?.trim() || "—"}</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 2. Participants */}
-      <section className="overview-card overview-card--pad">
-        <button
-          type="button"
-          className="overview-toggle"
-          onClick={() => setParticipantsOpen((o) => !o)}
-          aria-expanded={participantsOpen}
-        >
-          <div>
-            <div className="overview-label">Participants</div>
-            <div className="overview-value">
-              {participantsError ? "Couldn’t load people" : peopleLabel}
+        <section className="overview-card overview-card--pad overview-participants">
+          <button
+            type="button"
+            className="overview-toggle"
+            onClick={() => setParticipantsOpen((o) => !o)}
+            aria-expanded={participantsOpen}
+          >
+            <div>
+              <div className="overview-label">Participants</div>
+              <div className="overview-value">
+                {participantsError ? "Couldn’t load people" : peopleLabel}
+              </div>
+              <div className="overview-hint">Members in this event (not pending invites)</div>
             </div>
-            <div className="overview-hint">Members in this event (not pending invites)</div>
-          </div>
-          <span className="overview-chevron" aria-hidden="true">
-            {participantsOpen ? "▴" : "▾"}
-          </span>
-        </button>
-        {participantsOpen && !participantsError && (
-          <ul className="overview-people">
-            {participants.length === 0 ? (
-              <li className="overview-muted">No participants yet</li>
-            ) : (
-              participants.map((p) => (
-                <li key={p.id}>{p.name || p.email || `User #${p.id}`}</li>
-              ))
-            )}
-          </ul>
-        )}
-      </section>
+            <span className="overview-chevron" aria-hidden="true">
+              {participantsOpen ? "▴" : "▾"}
+            </span>
+          </button>
+          {participantsOpen && !participantsError && (
+            <ul className="overview-people">
+              {participants.length === 0 ? (
+                <li className="overview-muted">No participants yet</li>
+              ) : (
+                participants.map((p) => (
+                  <li key={p.id}>{p.name || p.email || `User #${p.id}`}</li>
+                ))
+              )}
+            </ul>
+          )}
+        </section>
+      </div>
 
-      {/* 3. Expense total */}
-      <section className="overview-card overview-card--pad">
-        <div className="overview-label">Expense total</div>
-        {expensesLoading ? (
-          <div className="overview-value overview-muted">Loading…</div>
-        ) : expensesError ? (
-          <div className="overview-value overview-muted">Couldn’t load expenses</div>
-        ) : (
-          <>
-            <div className="overview-value">{money(expenseTotal)}</div>
-            <div className="overview-hint">
-              {expenseCount === 0
-                ? "No expenses yet"
-                : expenseCount === 1
-                  ? "1 expense"
-                  : `${expenseCount} expenses`}
-            </div>
-          </>
-        )}
-      </section>
+      {/* Right column, same row as the square */}
+      <div className="overview-side">
+        <section className="overview-card overview-card--pad">
+          <div className="overview-label">Expense total</div>
+          {expensesLoading ? (
+            <div className="overview-value overview-muted">Loading…</div>
+          ) : expensesError ? (
+            <div className="overview-value overview-muted">Couldn’t load expenses</div>
+          ) : (
+            <>
+              <div className="overview-value">{money(expenseTotal)}</div>
+              <div className="overview-hint">
+                {expenseCount === 0
+                  ? "No expenses yet"
+                  : expenseCount === 1
+                    ? "1 expense"
+                    : `${expenseCount} expenses`}
+              </div>
+            </>
+          )}
+        </section>
 
-      {/* 4. Your balance */}
-      <section className="overview-card overview-card--pad">
-        <div className="overview-label">Your balance</div>
-        <div className={`overview-value ${myBalanceClass}`}>{myBalanceLabel}</div>
-        <button
-          type="button"
-          className="overview-link"
-          onClick={onGoToBalances}
-        >
-          View balances →
-        </button>
-      </section>
+        <section className="overview-card overview-card--pad">
+          <div className="overview-label">Your balance</div>
+          <div className={`overview-value ${myBalanceClass}`}>{myBalanceLabel}</div>
+          <button
+            type="button"
+            className="overview-link"
+            onClick={onGoToBalances}
+          >
+            View balances →
+          </button>
+        </section>
 
-      {/* 5. Group settlement status */}
-      <section className="overview-card overview-card--pad">
-        <div className="overview-label">Group status</div>
-        <div className="overview-value overview-value--sm">{groupStatus}</div>
-        <div className="overview-hint">Settle-up actions live on the Balances tab</div>
-      </section>
+        <section className="overview-card overview-card--pad">
+          <div className="overview-label">Group status</div>
+          <div className="overview-value overview-value--sm">{groupStatus}</div>
+          <div className="overview-hint">Settle-up actions live on the Balances tab</div>
+        </section>
+      </div>
     </div>
   );
 }

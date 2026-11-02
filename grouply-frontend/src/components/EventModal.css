@@ -367,10 +367,45 @@
   color: #6b6b6b;
 }
 
-/* Overview tab */
+/* Overview tab: left = details + participants, right = money summary */
 .event-modal .overview {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: start;
+}
+
+.event-modal .overview-main {
+  display: flex;
+  flex-direction: column;
   gap: 0.85rem;
+  min-width: 0;
+}
+
+.event-modal .overview-details {
+  aspect-ratio: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.event-modal .overview-side {
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.event-modal .overview-side .overview-card {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
 }
 
 .event-modal .overview-card {
@@ -385,7 +420,8 @@
 }
 
 .event-modal .overview-cover {
-  height: 140px;
+  flex: 1 1 auto;
+  min-height: 120px;
   background-size: cover;
   background-position: center;
   background-color: #ecece8;
@@ -502,8 +538,8 @@
 
 .event-modal .overview-chevron {
   color: #6b6b6b;
-  font-size: 0.85rem;
-  line-height: 1.6;
+  font-size: 2rem;
+  line-height: 1;
 }
 
 .event-modal .overview-people {
@@ -571,5 +607,38 @@
 
   .event-modal .form-actions .modal-btn {
     width: 100%;
+  }
+
+  .event-modal .overview {
+    grid-template-columns: 1fr;
+    row-gap: 0.85rem;
+  }
+
+  .event-modal .overview-main {
+    display: contents;
+  }
+
+  .event-modal .overview-details {
+    order: 1;
+    aspect-ratio: auto;
+  }
+
+  .event-modal .overview-cover {
+    flex: none;
+    height: 160px;
+  }
+
+  .event-modal .overview-side {
+    order: 2;
+    aspect-ratio: auto;
+    overflow: visible;
+  }
+
+  .event-modal .overview-side .overview-card {
+    flex: none;
+  }
+
+  .event-modal .overview-participants {
+    order: 3;
   }
 }
