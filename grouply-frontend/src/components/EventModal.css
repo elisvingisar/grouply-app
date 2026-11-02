@@ -572,6 +572,133 @@
   color: #2a2a2a;
 }
 
+/* Expenses + Balances tabs */
+.event-modal .modal-tab-panel h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.event-modal .modal-tab-panel h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: #111111;
+}
+
+.event-modal .expense-card,
+.event-modal .balance-row,
+.event-modal .settlement-card {
+  background: #f7f7f5;
+  border: 1px solid #e4e4df;
+  border-radius: 14px;
+  box-shadow: none;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-sans);
+  color: #111111;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.event-modal .expense-card:hover {
+  background: #f0f0ec;
+  border-color: #d8d8d4;
+  box-shadow: none;
+}
+
+.event-modal .balance-row .name,
+.event-modal .expense-payer {
+  font-weight: 600;
+  color: #111111;
+}
+
+.event-modal .expense-desc {
+  color: #6b6b6b;
+}
+
+.event-modal .expense-amount,
+.event-modal .balance-row .amount {
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.event-modal .share-row {
+  color: #3a3a3a;
+}
+
+.event-modal .expense-divider {
+  background: #e4e4df;
+}
+
+.event-modal .amount--debt { color: #8a3a32; }
+.event-modal .amount--credit { color: #2f6b4f; }
+.event-modal .amount--zero { color: #6b6b6b; }
+
+.event-modal .badge {
+  background: #ffffff;
+  color: #4a4a4a;
+  border: 1px solid #e4e4df;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.event-modal .modal-tab-panel .btn {
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  box-shadow: none;
+  transform: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.event-modal .modal-tab-panel .btn:not(.btn-sm) {
+  min-height: 40px;
+  padding: 0 1.15rem;
+}
+
+.event-modal .modal-tab-panel .btn-primary {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+}
+
+.event-modal .modal-tab-panel .btn-primary:hover:not(:disabled) {
+  background: #2a2a2a;
+  box-shadow: none;
+  transform: none;
+}
+
+.event-modal .modal-tab-panel .btn-muted,
+.event-modal .modal-tab-panel .btn-secondary {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #d8d8d4;
+}
+
+.event-modal .modal-tab-panel .btn-muted:hover:not(:disabled),
+.event-modal .modal-tab-panel .btn-secondary:hover:not(:disabled) {
+  background: #ecece8;
+  border-color: #cfcfc9;
+  color: #111111;
+}
+
+.event-modal .modal-tab-panel .btn-danger {
+  background: transparent;
+  color: #8a3a32;
+  border: 1px solid #e0c4c0;
+}
+
+.event-modal .modal-tab-panel .btn-danger:hover:not(:disabled) {
+  background: #faf0ee;
+  border-color: #8a3a32;
+  box-shadow: none;
+  transform: none;
+}
+
 @media (max-width: 768px) {
   .event-modal.modal-overlay {
     padding: 12px;
