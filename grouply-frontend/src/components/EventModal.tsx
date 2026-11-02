@@ -4,8 +4,11 @@ import type { EventItem } from "./EventCard";
 import "./EventModal.css";
 import ExpenseList from "./ExpenseList";
 import BalanceOverview from "./BalanceOverview";
+import EventOverview from "./EventOverview";
 import { updateEvent, deleteEvent, sendInvitation, listEventInvitations } from "../api/expenses";
 import { uploadImage } from "../api/uploads";
+
+type EventTab = "overview" | "details" | "expenses" | "balances" | "invitations";
 
 const toAbsolute = (u?: string) =>
     !u
@@ -36,7 +39,15 @@ export default function EventModal(props: any) {
     const [error, setError] = useState<string | null>(null);
 
     const [dragOver, setDragOver] = useState(false);
-    const [activeTab, setActiveTab] = useState<"details" | "expenses" | "balances" | "invitations">("details");
+    const [activeTab, setActiveTab] = useState<EventTab>("overview");
+    const [overviewReloadToken, setOverviewReloadToken] = useState(0);
+
+    const goToTab = (tab: EventTab) => {
+        setActiveTab(tab);
+        if (tab === "overview") {
+            setOverviewReloadToken((n) => n + 1);
+        }
+    };
 
     const [inviteEmail, setInviteEmail] = useState("");
     const [inviteMessage, setInviteMessage] = useState("");
@@ -189,15 +200,25 @@ export default function EventModal(props: any) {
 
                         {/* Tabs */}
                         <div className="tabs-container">
-                          <button className={activeTab === "details" ? "tab active" : "tab"} onClick={() => setActiveTab("details")}>Details</button>
-                          <button className={activeTab === "expenses" ? "tab active" : "tab"} onClick={() => setActiveTab("expenses")}>Expenses</button>
-                          <button className={activeTab === "balances" ? "tab active" : "tab"} onClick={() => setActiveTab("balances")}>Balances</button>
-                          <button className={activeTab === "invitations" ? "tab active" : "tab"} onClick={() => setActiveTab("invitations")}>
+                          <button type="button" className={activeTab === "overview" ? "tab active" : "tab"} onClick={() => goToTab("overview")}>Overview</button>
+                          <button type="button" className={activeTab === "details" ? "tab active" : "tab"} onClick={() => goToTab("details")}>Details</button>
+                          <button type="button" className={activeTab === "expenses" ? "tab active" : "tab"} onClick={() => goToTab("expenses")}>Expenses</button>
+                          <button type="button" className={activeTab === "balances" ? "tab active" : "tab"} onClick={() => goToTab("balances")}>Balances</button>
+                          <button type="button" className={activeTab === "invitations" ? "tab active" : "tab"} onClick={() => goToTab("invitations")}>
                             Invitations
                           </button>
                         </div>
 
                         {/* Tab content */}
+                        {activeTab === "overview" && (
+                          <EventOverview
+                            event={event}
+                            imagePreviewUrl={previewAbs}
+                            reloadToken={overviewReloadToken}
+                            onGoToBalances={() => goToTab("balances")}
+                          />
+                        )}
+
                         {activeTab === "details" && (
                           <div className="form-grid">
                             {/* Image dropzone + preview */}
