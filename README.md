@@ -2,9 +2,6 @@
 
 Grouply is an expense-splitting app for shared events.
 
-Started by @ElisVingisar to explore full-stack development; forked and continued by @rpettai to enhance the UI and features.
-
-
 ### Tech Stack
 **Backend**: Java 21, Spring Boot 3.5, PostgreSQL, Spring Security + JWT <br>
 **Frontend**: React 19, TypeScript, Vite <br>
@@ -21,6 +18,12 @@ Started by @ElisVingisar to explore full-stack development; forked and continued
 ---
 
 # Screenshots
+
+## v2 (being updated)
+
+https://github.com/elisvingisar/grouply-app/pull/4
+
+## v1
 
 ### Events Dashboard
 <img width="1512" height="824" alt="events" src="https://github.com/user-attachments/assets/fb8620f1-8271-424c-b773-424b6e9b2170" />
