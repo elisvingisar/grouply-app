@@ -4,8 +4,11 @@ import type { EventItem } from "./EventCard";
 import "./EventModal.css";
 import ExpenseList from "./ExpenseList";
 import BalanceOverview from "./BalanceOverview";
+import EventOverview from "./EventOverview";
 import { updateEvent, deleteEvent, sendInvitation, listEventInvitations } from "../api/expenses";
 import { uploadImage } from "../api/uploads";
+
+type EventTab = "overview" | "details" | "expenses" | "balances" | "invitations";
 
 const toAbsolute = (u?: string) =>
     !u
@@ -25,7 +28,6 @@ export default function EventModal(props: any) {
     const [time, setTime] = useState(initialDateTime ? initialDateTime.slice(11, 16) : "");
     
     const [location, setLocation] = useState(event.location ?? "");
-    const [capacity, setCapacity] = useState<number>(event.capacity ?? 1);
     const [imageUrl, setImageUrl] = useState(event.imageUrl);
     const [previewAbs, setPreviewAbs] = useState<string | null>(
         event.imageUrl ? toAbsolute(event.imageUrl) : null
@@ -37,7 +39,15 @@ export default function EventModal(props: any) {
     const [error, setError] = useState<string | null>(null);
 
     const [dragOver, setDragOver] = useState(false);
-    const [activeTab, setActiveTab] = useState<"details" | "expenses" | "balances" | "invitations">("details");
+    const [activeTab, setActiveTab] = useState<EventTab>("overview");
+    const [overviewReloadToken, setOverviewReloadToken] = useState(0);
+
+    const goToTab = (tab: EventTab) => {
+        setActiveTab(tab);
+        if (tab === "overview") {
+            setOverviewReloadToken((n) => n + 1);
+        }
+    };
 
     const [inviteEmail, setInviteEmail] = useState("");
     const [inviteMessage, setInviteMessage] = useState("");
@@ -130,7 +140,6 @@ export default function EventModal(props: any) {
                 description: description.trim(),
                 dateTime,
                 location: location.trim(),
-                capacity: Number(capacity) || 0,
                 imageUrl: imageUrl?.trim() || undefined,
             };
 
@@ -179,36 +188,46 @@ export default function EventModal(props: any) {
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose} aria-hidden="true">
+        <div className="event-modal modal-overlay" onClick={onClose} aria-hidden="true">
             <div className="modal-panel" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-scroller">
                     <div className="modal-content">
                         {/* Header */}
                         <div className="modal-header">
                           <h2 id="event-modal-title">{event.title}</h2>
-                          <button className="btn-icon" onClick={onClose} aria-label="Close">✕</button>
+                          <button type="button" className="btn-icon" onClick={onClose} aria-label="Close">✕</button>
                         </div>
 
                         {/* Tabs */}
                         <div className="tabs-container">
-                          <button className={activeTab === "details" ? "tab active" : "tab"} onClick={() => setActiveTab("details")}>Details</button>
-                          <button className={activeTab === "expenses" ? "tab active" : "tab"} onClick={() => setActiveTab("expenses")}>Expenses</button>
-                          <button className={activeTab === "balances" ? "tab active" : "tab"} onClick={() => setActiveTab("balances")}>Balances</button>
-                          <button className={activeTab === "invitations" ? "tab active" : "tab"} onClick={() => setActiveTab("invitations")}>
+                          <button type="button" className={activeTab === "overview" ? "tab active" : "tab"} onClick={() => goToTab("overview")}>Overview</button>
+                          <button type="button" className={activeTab === "details" ? "tab active" : "tab"} onClick={() => goToTab("details")}>Details</button>
+                          <button type="button" className={activeTab === "expenses" ? "tab active" : "tab"} onClick={() => goToTab("expenses")}>Expenses</button>
+                          <button type="button" className={activeTab === "balances" ? "tab active" : "tab"} onClick={() => goToTab("balances")}>Balances</button>
+                          <button type="button" className={activeTab === "invitations" ? "tab active" : "tab"} onClick={() => goToTab("invitations")}>
                             Invitations
                           </button>
                         </div>
 
+                        <div className="modal-body">
                         {/* Tab content */}
+                        {activeTab === "overview" && (
+                          <EventOverview
+                            event={event}
+                            imagePreviewUrl={previewAbs}
+                            reloadToken={overviewReloadToken}
+                            onGoToBalances={() => goToTab("balances")}
+                          />
+                        )}
+
                         {activeTab === "details" && (
-                          <div style={{ display: "grid", gap: "var(--space-xs)" }}>
+                          <div className="form-grid">
                             {/* Image dropzone + preview */}
                             <div
                               className={"dropzone" + (dragOver ? " dropzone--active" : "")}
                               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                               onDragLeave={() => setDragOver(false)}
                               onDrop={onDrop}
-                              style={{ marginBottom: 16 }}
                             >
                               {previewAbs ? (
                                 <img src={previewAbs} alt="Event" />
@@ -221,69 +240,56 @@ export default function EventModal(props: any) {
                               {uploading && <div style={{ marginTop: 8 }}>Uploading…</div>}
                             </div>
 
-                            <div className="form-grid">
-                                <div className="field">
-                                    <label className="field__label">Title *</label>
-                                    <input 
-                                        className="input" 
-                                        value={title} 
-                                        onChange={(e) => setTitle(e.target.value)} 
-                                        placeholder="Event title"
-                                        required 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Title *</label>
+                                <input
+                                    className="input"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder="Event title"
+                                    required
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Description</label>
-                                    <textarea 
-                                        className="textarea" 
-                                        value={description} 
-                                        onChange={(e) => setDescription(e.target.value)} 
-                                        rows={3}
-                                        placeholder="Event description (optional)"
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Description</label>
+                                <textarea
+                                    className="textarea"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    rows={3}
+                                    placeholder="Event description (optional)"
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Date</label>
-                                    <input 
-                                        className="input" 
-                                        type="date" 
-                                        value={date} 
-                                        onChange={(e) => setDate(e.target.value)} 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Date</label>
+                                <input
+                                    className="input"
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Time</label>
-                                    <input 
-                                        className="input" 
-                                        type="time" 
-                                        value={time} 
-                                        onChange={(e) => setTime(e.target.value)} 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Time</label>
+                                <input
+                                    className="input"
+                                    type="time"
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="field">
-                                    <label className="field__label">Location</label>
-                                    <input 
-                                        className="input" 
-                                        value={location} 
-                                        onChange={(e) => setLocation(e.target.value)}
-                                        placeholder="Event location (optional)" 
-                                    />
-                                </div>
-
-                                <div className="field">
-                                    <label className="field__label">Capacity</label>
-                                    <input 
-                                        className="input" 
-                                        type="number" 
-                                        min={1} 
-                                        value={capacity} 
-                                        onChange={(e) => setCapacity(Number(e.target.value))} 
-                                    />
-                                </div>
+                            <div className="field">
+                                <label className="field__label">Location</label>
+                                <input
+                                    className="input"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    placeholder="Event location (optional)"
+                                />
                             </div>
 
                             {error && (
@@ -294,16 +300,18 @@ export default function EventModal(props: any) {
 
                             {/* Actions (only show on details tab) */}
                             <div className="form-actions">
-                                <button 
-                                    className="btn btn-danger" 
-                                    onClick={onDelete} 
+                                <button
+                                    type="button"
+                                    className="modal-btn modal-btn--danger"
+                                    onClick={onDelete}
                                     disabled={deleting}
                                 >
                                     {deleting ? "Deleting..." : "Delete"}
                                 </button>
-                                <button 
-                                    className="btn btn-primary" 
-                                    onClick={onSave} 
+                                <button
+                                    type="button"
+                                    className="modal-btn modal-btn--primary"
+                                    onClick={onSave}
                                     disabled={saving}
                                 >
                                     {saving ? "Saving..." : "Save changes"}
@@ -313,38 +321,38 @@ export default function EventModal(props: any) {
                         )}
 
                         {activeTab === "expenses" && (
-                          <div>
+                          <div className="modal-tab-panel">
                             <ExpenseList eventId={event.id} />
                           </div>
                         )}
 
                         {activeTab === "balances" && (
-                          <div>
+                          <div className="modal-tab-panel">
                             <BalanceOverview eventId={event.id} />
                           </div>
                         )}
 
                         {activeTab === "invitations" && (
-                          <div className="modal-section" style={{ display: "grid", gap: 12 }}>
-                            <h3 style={{ margin: 0 }}>Invite people</h3>
+                          <div className="modal-section">
+                            <h3>Invite people</h3>
 
-                            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            <div className="invite-row">
                               <input
                                 className="input"
                                 type="email"
                                 placeholder="friend@example.com"
                                 value={inviteEmail}
                                 onChange={(e) => setInviteEmail(e.target.value)}
-                                style={{ flex: "1 1 260px" }}
                               />
                               <input
-                              className="input"
-                              placeholder="Optional message"
-                              value={inviteMessage}
-                              onChange={(e) => setInviteMessage(e.target.value)}
-                            />
+                                className="input"
+                                placeholder="Optional message"
+                                value={inviteMessage}
+                                onChange={(e) => setInviteMessage(e.target.value)}
+                              />
                               <button
-                                className="btn btn-primary"
+                                type="button"
+                                className="modal-btn modal-btn--primary"
                                 onClick={handleSendInvite}
                                 disabled={inviting || !inviteEmail.trim()}
                               >
@@ -353,11 +361,11 @@ export default function EventModal(props: any) {
                             </div>
 
                             {invites.length > 0 ? (
-                              <div style={{ marginTop: 8 }}>
-                                <div style={{ fontWeight: 600, marginBottom: 6 }}>Invitations</div>
-                                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                              <div>
+                                <div className="invite-list-title">Invitations</div>
+                                <ul className="invite-list">
                                   {invites.map((i) => (
-                                    <li key={i.id} style={{ marginBottom: 4 }}>
+                                    <li key={i.id}>
                                       {(i.userName || i.email)} — {i.status.toLowerCase()}
                                       {i.respondedAt ? ` (on ${new Date(i.respondedAt).toLocaleDateString()})` : ""}
                                     </li>
@@ -365,10 +373,11 @@ export default function EventModal(props: any) {
                                 </ul>
                               </div>
                             ) : (
-                              <p className="text-muted" style={{ marginTop: 8 }}>No invitations yet.</p>
+                              <p className="invite-empty">No invitations yet.</p>
                             )}
                           </div>
                         )}
+                        </div>
                       </div>
                     </div>
                 </div>

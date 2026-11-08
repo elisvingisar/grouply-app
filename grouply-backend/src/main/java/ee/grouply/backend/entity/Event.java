@@ -29,8 +29,6 @@ public class Event {
 
     private String location;
 
-    private Integer capacity;
-
     @Column(length = 2048)
     private String imageUrl;
 
@@ -51,12 +49,11 @@ public class Event {
 
     public Event() {}
 
-    public Event(String title, String description, LocalDateTime dateTime, String location, Integer capacity) {
+    public Event(String title, String description, LocalDateTime dateTime, String location) {
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;
         this.location = location;
-        this.capacity = capacity;
     }
 
     // -- getters / setters --
@@ -75,9 +72,6 @@ public class Event {
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-
-    public Integer getCapacity() { return capacity; }
-    public void setCapacity(Integer capacity) { this.capacity = capacity; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }

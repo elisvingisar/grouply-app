@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login, setToken } from "../api/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../api/auth";
+import "./AuthPages.css";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,10 +16,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await login({ email, password });
-      setToken(response.token);
+      await login({ email, password });
       navigate("/events");
-    } catch (err) {
+    } catch {
       setError("Invalid email or password");
     } finally {
       setLoading(false);
@@ -26,65 +26,72 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ 
-      maxWidth: 400, 
-      margin: "80px auto", 
-      padding: 24,
-      background: "var(--card-bg)",
-      borderRadius: 12,
-      border: "1px solid var(--card-border-color)"
-    }}>
-      <h1 style={{ marginBottom: 24, textAlign: "center" }}>Login to Grouply</h1>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="field">
-          <label className="field__label">Email</label>
-          <input
-            className="input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@localhost"
-            required
-          />
-        </div>
+    <div className="auth-page">
+      <section className="auth-brand" aria-label="Grouply welcome">
+        <p className="auth-brand__name">Grouply</p>
+        <h1 className="auth-brand__slogan">Split costs. Keep the peace.</h1>
+        <p className="auth-brand__hint">
+          Track shared expenses for trips and groups — fair shares without the awkward math.
+        </p>
+      </section>
 
-        <div className="field">
-          <label className="field__label">Password</label>
-          <input
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
+      <section className="auth-panel" aria-label="Log in">
+        <h2 className="auth-panel__title">Log in</h2>
 
-        {error && (
-          <div className="form-error" style={{ marginBottom: 16 }}>
-            {error}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="field__label" htmlFor="login-email">
+              Email
+            </label>
+            <input
+              id="login-email"
+              className="input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@localhost"
+              autoComplete="email"
+              required
+            />
           </div>
-        )}
 
-        <button 
-          type="submit" 
-          className="btn btn-primary" 
-          style={{ width: "100%", marginBottom: 16 }}
-          disabled={loading}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          <div className="field">
+            <label className="field__label" htmlFor="login-password">
+              Password
+            </label>
+            <input
+              id="login-password"
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Your password"
+              autoComplete="current-password"
+              required
+            />
+          </div>
 
-        <div style={{ textAlign: "center" }}>
-          <a 
-            href="/register" 
-            style={{ color: "var(--primary)", textDecoration: "none" }}
-          >
-            Don't have an account? Register
-          </a>
-        </div>
-      </form>
+          {error && <div className="auth-error">{error}</div>}
+
+          <div className="auth-actions">
+            <button
+              type="submit"
+              className="auth-btn auth-btn--primary"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Log in"}
+            </button>
+
+            <div className="auth-divider" aria-hidden="true">
+              or
+            </div>
+
+            <Link to="/register" className="auth-btn auth-btn--secondary">
+              Create new account
+            </Link>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }

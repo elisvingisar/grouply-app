@@ -10,9 +10,19 @@ export interface AuthResponse {
 export interface LoginRequest { email: string; password: string; }
 export interface RegisterRequest { name: string; email: string; password: string; }
 
-export function saveAuth(token: string, user: any) {
+export type StoredUser = {
+  id: number;
+  email: string;
+  name: string;
+};
+
+export function saveAuth(token: string, user: StoredUser) {
   localStorage.setItem("authToken", token);
   localStorage.setItem("user", JSON.stringify(user));
+}
+
+function userFromAuthResponse(data: AuthResponse): StoredUser {
+  return { id: data.userId, email: data.email, name: data.name };
 }
 
 export function getToken(): string | null {
@@ -23,6 +33,7 @@ export function setToken(token: string): void {
 }
 export function clearToken(): void {
   localStorage.removeItem("authToken");
+  localStorage.removeItem("user");
 }
 export function isAuthenticated(): boolean {
   return !!getToken();
@@ -36,7 +47,7 @@ export async function login(req: LoginRequest): Promise<AuthResponse> {
   });
   if (!res.ok) throw new Error("Login failed");
   const data = (await res.json()) as AuthResponse;
-  setToken(data.token);
+  saveAuth(data.token, userFromAuthResponse(data));
   return data;
 }
 
@@ -48,7 +59,7 @@ export async function register(req: RegisterRequest): Promise<AuthResponse> {
   });
   if (!res.ok) throw new Error("Registration failed");
   const data = (await res.json()) as AuthResponse;
-  setToken(data.token);
+  saveAuth(data.token, userFromAuthResponse(data));
   return data;
 }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { register, setToken } from "../api/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../api/auth";
+import "./AuthPages.css";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -13,7 +14,7 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
@@ -22,10 +23,9 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await register({ name, email, password });
-      setToken(response.token);
+      await register({ name, email, password });
       navigate("/events");
-    } catch (err) {
+    } catch {
       setError("Registration failed. Email may already be in use.");
     } finally {
       setLoading(false);
@@ -33,78 +33,81 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ 
-      maxWidth: 400, 
-      margin: "80px auto", 
-      padding: 24,
-      background: "var(--card-bg)",
-      borderRadius: 12,
-      border: "1px solid var(--card-border-color)"
-    }}>
-      <h1 style={{ marginBottom: 24, textAlign: "center" }}>Create Account</h1>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="field">
-          <label className="field__label">Name</label>
-          <input
-            className="input"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Your name"
-            required
-          />
-        </div>
+    <div className="auth-page auth-page--solo">
+      <section className="auth-panel" aria-label="Create account">
+        <h2 className="auth-panel__title">Create account</h2>
 
-        <div className="field">
-          <label className="field__label">Email</label>
-          <input
-            className="input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            required
-          />
-        </div>
-
-        <div className="field">
-          <label className="field__label">Password</label>
-          <input
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="At least 6 characters"
-            required
-            minLength={6}
-          />
-        </div>
-
-        {error && (
-          <div className="form-error" style={{ marginBottom: 16 }}>
-            {error}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="field__label" htmlFor="register-name">
+              Name
+            </label>
+            <input
+              id="register-name"
+              className="input"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              autoComplete="name"
+              required
+            />
           </div>
-        )}
 
-        <button 
-          type="submit" 
-          className="btn btn-primary" 
-          style={{ width: "100%", marginBottom: 16 }}
-          disabled={loading}
-        >
-          {loading ? "Creating account..." : "Register"}
-        </button>
+          <div className="field">
+            <label className="field__label" htmlFor="register-email">
+              Email
+            </label>
+            <input
+              id="register-email"
+              className="input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@email.com"
+              autoComplete="email"
+              required
+            />
+          </div>
 
-        <div style={{ textAlign: "center" }}>
-          <a 
-            href="/login" 
-            style={{ color: "var(--primary)", textDecoration: "none" }}
-          >
-            Already have an account? Login
-          </a>
-        </div>
-      </form>
+          <div className="field">
+            <label className="field__label" htmlFor="register-password">
+              Password
+            </label>
+            <input
+              id="register-password"
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="At least 6 characters"
+              autoComplete="new-password"
+              required
+              minLength={6}
+            />
+          </div>
+
+          {error && <div className="auth-error">{error}</div>}
+
+          <div className="auth-actions">
+            <button
+              type="submit"
+              className="auth-btn auth-btn--primary"
+              disabled={loading}
+            >
+              {loading ? "Creating account..." : "Create account"}
+            </button>
+
+            <div className="auth-divider" aria-hidden="true">
+              or
+            </div>
+
+            <Link to="/login" className="auth-btn auth-btn--secondary">
+              I already have an account
+            </Link>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }

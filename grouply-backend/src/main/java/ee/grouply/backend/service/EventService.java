@@ -35,7 +35,6 @@ public class EventService {
         User user = findUserByEmail(email);
 
         Event event = new Event();
-        event.setCapacity(dto.getCapacity());
         event.setCreator(user);
         event.setDateTime(dto.getDateTime());
         event.setDescription(dto.getDescription());
@@ -96,7 +95,6 @@ public class EventService {
         event.setDescription(dto.getDescription());
         event.setDateTime(dto.getDateTime());
         event.setLocation(dto.getLocation());
-        event.setCapacity(dto.getCapacity());
         event.setImageUrl(dto.getImageUrl());
 
         Event saved = eventRepository.save(event);
@@ -168,7 +166,7 @@ public class EventService {
         dto.setDescription(event.getDescription());
         dto.setDateTime(event.getDateTime());
         dto.setLocation(event.getLocation());
-        dto.setCapacity(event.getCapacity());
+        dto.setParticipantCount(event.getParticipants() != null ? event.getParticipants().size() : 0);
         dto.setImageUrl(event.getImageUrl());
         return dto;
     }

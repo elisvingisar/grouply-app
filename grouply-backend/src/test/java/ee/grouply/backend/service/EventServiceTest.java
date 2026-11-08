@@ -63,7 +63,6 @@ class EventServiceTest {
         testEvent.setDescription("Test Description");
         testEvent.setDateTime(LocalDateTime.now().plusDays(7));
         testEvent.setLocation("Tallinn");
-        testEvent.setCapacity(10);
         testEvent.setCreator(testUser);
         testEvent.addParticipant(testUser);
 
@@ -73,7 +72,6 @@ class EventServiceTest {
         createDTO.setDescription("New Description");
         createDTO.setDateTime(LocalDateTime.now().plusDays(14));
         createDTO.setLocation("Tartu");
-        createDTO.setCapacity(20);
     }
 
     // ══════════════════════════════════════════════════════════════════

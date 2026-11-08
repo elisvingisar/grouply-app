@@ -10,7 +10,6 @@ export default function NewEventPage() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -66,7 +65,6 @@ export default function NewEventPage() {
         description,
         dateTime,
         location,
-        capacity: capacity ? Number(capacity) : null,
         imageUrl,
       });
       navigate("/events");
@@ -96,7 +94,11 @@ export default function NewEventPage() {
         >
           {imageUrl ? (
             <img
-              src={(import.meta.env.VITE_API_BASE || "http://localhost:8080") + imageUrl}
+              src={
+                imageUrl.startsWith("http://") || imageUrl.startsWith("https://")
+                  ? imageUrl
+                  : (import.meta.env.VITE_API_BASE || "http://localhost:8080") + imageUrl
+              }
               alt="Event"
               style={{ maxWidth: "100%", borderRadius: 8 }}
             />
@@ -166,18 +168,6 @@ export default function NewEventPage() {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Where will it be?"
-            />
-          </div>
-
-          <div className="field">
-            <label className="field__label">Capacity</label>
-            <input
-              className="input"
-              type="number"
-              value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
-              placeholder="Max participants"
-              min="1"
             />
           </div>
 
